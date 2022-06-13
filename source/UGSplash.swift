@@ -31,12 +31,10 @@ public class UGSplash:NSObject{
 		statusChange = block
 		supervc = vc
 		guard let data =  UGAD.share.data else {
-			log("未获得广告数据",level: .error)
 			finesh(state: .none)
 			return
 		}
 		guard let slot = UGAD.share.data?.kaiping else{
-			log("未获得开屏广告数据",level: .error)
 			finesh(state: .none)
 			return
 		}
@@ -78,7 +76,7 @@ public class UGSplash:NSObject{
 		
 		splashAdView.rootViewController = supervc
 		
-		app.KWindow??.addSubview(splashAdView)
+		app.KWindow?.addSubview(splashAdView)
 		adview = splashAdView
 		splashAdView.loadAdData()
 		UGServerLog.ug_log(type: .splashload,info: ["slotID":slot.adid,"tag":"ioschuanshanjia"])
@@ -116,32 +114,28 @@ extension UGSplash:BUSplashAdDelegate{
 	public func splashAdDidLoad(_ splashAd: BUSplashAdView) {
 		supervc?.view.addSubview(splashAd)
 		UserDefaults.standard.setValue(Date().toString(), forKey: "splash.showTime")
-		log("chuanshanjia:splashAdDidLoad")
 		UGServerLog.ug_log(type: .splashshow,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
 		
 	}
 	
 	public func splashAdCountdown(toZero splashAd: BUSplashAdView) {
-		log("chuanshanjia:splashAdCountdown")
 		splashAd.removeFromSuperview()
 
 
 	}
 	public func splashAdDidClickSkip(_ splashAd: BUSplashAdView) {
-		log("chuanshanjia:splashAdDidClickSkip")
 		splashAd.removeFromSuperview()
 	
 	
 	}
 	public func splashAd(_ splashAd: BUSplashAdView, didFailWithError error: Error?) {
-		log("chuanshanjia:didFailWithError",error.debugDescription,level: .error)
+		log("穿山甲开屏广告错误\(error)")
 		finesh(state: .error)
 		
 		UGServerLog.ug_log(type: .splashloaderror,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
 	}
 		
 	public func splashAdWillClose(_ splashAd: BUSplashAdView) {
-		log("chuanshanjia:splashAdWillClose")
 		finesh(state: .finesh)
 		UGServerLog.ug_log(type: .splashhidden,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
 	}
@@ -151,7 +145,7 @@ extension UGSplash:BUSplashAdDelegate{
 extension UGSplash:SJMSplashAdDelegate{
 	//  开屏广告素材加载成功
 	public func sjm_splashAdDidLoad(_ splashAd: SJMSplashAd) {
-		splashAd.showAd(in: app.KWindow!!, withBottomView: nil)
+		splashAd.showAd(in: app.KWindow!, withBottomView: nil)
 		UserDefaults.standard.setValue(Date().toString(), forKey: "splash.showTime")
 		UGServerLog.ug_log(type: .splashshow,info: ["slotID":splashAd.placementId,
 											 "tag":"iossanjiaomao"])

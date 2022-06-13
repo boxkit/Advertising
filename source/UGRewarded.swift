@@ -8,10 +8,10 @@
 import Foundation
 import BUAdSDK
 
-public class UGRewarded:NSObject{
+@objc public class UGRewarded:NSObject{
 	
-	public static let share = UGRewarded()
-	public enum RewardedStatus:Int{
+    @objc public static let share = UGRewarded()
+    @objc public enum RewardedStatus:Int{
 		case error = 100
 		case skip = 101
 		case finesh = 102
@@ -23,27 +23,31 @@ public class UGRewarded:NSObject{
 	/**
 	 显示激励广告
 	 */
-	public func show(_ vc:UIViewController? = nil,
+    @objc public func show(_ vc:UIViewController? = nil,
 					 ignore:Bool = false,
 					 willShow:(()->(Bool))? = nil,
 					 block:@escaping (_ status:RewardedStatus)->()){
 		ignoreTime = ignore
 		statusChange = block
 		supervc = vc
+        guard let data =  UGAD.share.data else {
+            log("激励广告-无广告数据")
+            if let block = statusChange{
+                block(.skip)
+            }
+            return
+        }
 		guard  var slot = UGAD.share.data?.jili else{
+            log("激励广告-无激励广告")
 			if let block = statusChange{
 				block(.skip)
 			}
 			return
 		}
 		
-		guard let data =  UGAD.share.data else {
-			if let block = statusChange{
-				block(.skip)
-			}
-			return
-		}
+		
 		if slot.status == 2{
+            log("激励广告-广告不启用")
 			if let block = statusChange{
 				block(.skip)
 			}
@@ -57,6 +61,7 @@ public class UGRewarded:NSObject{
 			let abs = (date.date().timeIntervalSinceNow)+slot.time.double()
 			
 			if abs>0{
+                log("激励广告-距离上次广告相隔时间小于服务器配置时间")
 				if let block = statusChange{
 					block(.skip)
 				}
@@ -75,14 +80,21 @@ public class UGRewarded:NSObject{
 												 "tag":data.tag,
 												 "adID":data.adid,
 												])
-		}
+            
+        }else{
+            log("激励广告-代理返回不显示广告")
+            if let block = statusChange{
+                block(.skip)
+            }
+            return
+        }
 
 	
 	}
 	
 	
 	func rewarded_chuanshanjia(_ slot:UGADModel.UGADItem){
-		
+        log("激励广告-加载穿山甲广告")
 		let model = BURewardedVideoModel()
 		model.userId = app.ug_udid
 		let rewardedView = BUNativeExpressRewardedVideoAd.init(slotID: slot.adid, rewardedVideoModel: model)
@@ -92,7 +104,7 @@ public class UGRewarded:NSObject{
 	}
 	
 	func rewarded_sanjiaomao(_ slot:UGADModel.UGADItem){
-	
+        log("激励广告-加载三脚猫广告")
 		let model = SJMRewardVideoModel()
 		model.userId = app.ug_udid
 		model.reward_name = word0008.loc
@@ -110,6 +122,7 @@ public class UGRewarded:NSObject{
 extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	// 返回的错误码(error)表示广告加载失败的原因，所有错误码详情请见链接
 	public func nativeExpressRewardedVideoAd(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd, didFailWithError error: Error?) {
+        log("激励广告-穿山甲ExpressRewardedVideoAd:\(error.debugDescription)",level: .error)
 		if let block = statusChange{
 			block(.error)
 		}
@@ -118,6 +131,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	}
 	// 渲染失败，网络原因或者硬件原因导致渲染失败,可以更换手机或者网络环境测试。建议升级到穿山甲平台最新版本
 	public func nativeExpressRewardedVideoAdViewRenderFail(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd, error: Error?) {
+        log("激励广告-穿山甲ExpressRewardedVideoAdViewRenderFail:\(error.debugDescription)",level: .error)
 		if let block = statusChange{
 			block(.error)
 		}
@@ -134,13 +148,14 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 		guard let vc:UIViewController = self.supervc  else {
 			return
 		}
+        log("激励广告-穿山甲视频加载成功,开始显示")
 		rewardedVideoAd.show(fromRootViewController: vc)
 	
 		UGServerLog.ug_log(type: .expressshow,info: ["tag":"ioschuanshanjia"])
 	}
 	// 用户关闭广告时会触发此回调，注意：任何广告的关闭操作必须用户主动触发;
 	public func nativeExpressRewardedVideoAdDidClose(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd) {
-		
+        log("激励广告-穿山甲用户关闭广告")
 		if let block = statusChange{
 			block(.finesh)
 		}
@@ -150,6 +165,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	}
 	
 	public func nativeExpressRewardedVideoAdServerRewardDidSucceed(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd, verify: Bool) {
+        log("激励广告-穿山甲触发有效激励")
 		if !ignoreTime && verify{
 			UserDefaults.standard.setValue(Date().toString(), forKey: "ugad.rewarded.showTime")
 		}
@@ -166,6 +182,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 		guard let vc:UIViewController = supervc  else {
 			return
 		}
+        log("激励广告-三脚猫 视频数据下载成功回调 rewardVideoAdVideoDidLoad")
 		if let adview = adview as? SJMRewardVideoAd{
 			adview.show(in: vc)
 	
@@ -174,6 +191,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 	
 	}
 	public func sjm_rewardVideoAdDidClose(_ rewardedVideoAd: SJMRewardVideoAd) {
+        log("激励广告-三脚猫 广告关闭")
 		if let block = statusChange{
 			block(.finesh)
 		}
@@ -181,12 +199,14 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 		
 	}
 	public func sjm_rewardVideoAd(_ rewardedVideoAd: SJMRewardVideoAd, didFailWithError error: Error) {
+        log("激励广告-三脚猫 rewardVideoAd:\(error)",level: .error)
 		if let block = statusChange{
 			block(.error)
 		}
 		UGServerLog.ug_log(type: .expressloaderror,info: ["tag":"iossanjiaomao"])
 	}
 	public func sjm_rewardVideoAdDidRewardEffective(_ rewardedVideoAd: SJMRewardVideoAd) {
+        log("激励广告-三脚猫 触发有效激励")
 		if !ignoreTime{
 			UserDefaults.standard.setValue(Date().toString(), forKey: "ugad.rewarded.showTime")
 		}

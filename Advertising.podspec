@@ -24,7 +24,11 @@ Pod::Spec.new do |spec|
 
 	spec.source       = { :git => "http://github/ubungit.git", :tag => "#{spec.version}" }
 	
-	spec.source_files  =  ["source/**/*.{h,m,swift}","SJM/SJMGDT/*.{h,m,swift}"]
+	spec.source_files  =  [
+  "Advertising.swift",
+  "source/**/*.{h,m,swift}",
+  "SJM/SJMGDT/*.{h,m,swift}"
+  ]
 	spec.static_framework = true
 	
 	spec.pod_target_xcconfig = {
@@ -32,10 +36,14 @@ Pod::Spec.new do |spec|
 	}
 	
 	spec.dependency 'Ads-CN'
-	spec.dependency 'UGComment'
 	spec.dependency 'HandyJSON'
-	spec.dependency 'SwiftDate'
-	
+  
+  spec.dependency 'UGNetwork'
+  spec.dependency 'UGBase'
+  spec.dependency 'UGConfig'
+  spec.dependency 'UGAlert'
+  spec.dependency 'UGServerLog'
+  
 	
 	
 	

@@ -9,8 +9,9 @@ import Foundation
 
 
 
-public protocol UGADBandleCellDelegate:NSObjectProtocol{
-	func bandleCellDidUpdate(cell:UGADBandleCell)
+@objc public protocol UGADBandleCellDelegate:NSObjectProtocol{
+	func isEnableReload()->Bool
+	func bandleCellDidUpdate(express:UGExpress)
 }
 public class UGADBandleCell:UICollectionViewCell{
 	private var cutDown = 30
@@ -26,10 +27,9 @@ public class UGADBandleCell:UICollectionViewCell{
 		let ex = UGExpress()
 		ex.updateBlock = ({ [weak self] statue in
 			guard let self = self else {return}
-			
-			self.delegate?.bandleCellDidUpdate(cell: self)
 			self.itemview.dataSouce = self.express.views
 			self.itemview.reloadData()
+            self.delegate?.bandleCellDidUpdate(express: ex)
 			
 		})
 		return ex
@@ -41,20 +41,33 @@ public class UGADBandleCell:UICollectionViewCell{
 	public override init(frame: CGRect) {
 		super.init(frame: frame)
 		NotificationCenter.default.addObserver(self, selector: #selector(globalDoit), name: UIApplication.timerNotification, object: nil)
-		addSubview(itemview)
+		contentView.addSubview(itemview)
 		DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
 			self.express.reload()
 		}
-		
 		itemview.snp.makeConstraints { make in
-			make.left.right.bottom.top.equalToSuperview()
+			make.edges.equalToSuperview()
 		}
+		
+	}
+	public func reloadData(){
+		
+		itemview.snp.remakeConstraints() { make in
+			make.edges.equalToSuperview()
+		}
+	
+		itemview.reloadData()
+
 	}
 	
 	@objc open func globalDoit(){
 		cutDown -= 1
 		if cutDown<=0{
 			cutDown = 30
+			
+			if delegate?.isEnableReload() == false{
+				return
+			}
 			express.reload()
 		}
 		
@@ -79,11 +92,21 @@ public class UGADBandleView:UGBandle{
 			fatalError("init(coder:) has not been implemented")
 		}
 		
+		public override func layoutSubviews() {
+			super.layoutSubviews()
+			if let view = contentView.viewWithTag(101){
+				view.snp.remakeConstraints { make in
+					make.top.left.right.bottom.equalToSuperview()
+				}
+			}
+			
+		}
+		
 	}
 	
 	private var isdisshow = false;
 	private var adcutDown = 30
-	weak public var supervc:UIViewController? = nil
+	public var supervc:UIViewController? = nil
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
@@ -91,8 +114,7 @@ public class UGADBandleView:UGBandle{
 	
 	public override func makeLayout() {
 		collectView.snp.makeConstraints { make in
-			make.left.right.top.equalToSuperview()
-			make.height.equalToSuperview()
+			make.edges.equalToSuperview()
 		}
 		pageControl.isHidden = true
 	}
@@ -100,6 +122,12 @@ public class UGADBandleView:UGBandle{
 	
 	required init?(coder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
+	}
+	public override func reloadData() {
+		super.reloadData()
+		
+		self.collectView.reloadData()
+		
 	}
 	public override func makeConfig() {
 		collectView.register(UGADCell.self, forCellWithReuseIdentifier: "UGADCell")
@@ -114,26 +142,27 @@ public class UGADBandleView:UGBandle{
 			view.removeFromSuperview()
 		}
 		if let view = dataSouce.value(at: indexPath.row) as? BUNativeExpressAdView{
-			cell.contentView.addSubview(view)
+		
 			view.render()
 			view.tag = 101
 			view.rootViewController = supervc
-			view.snp.makeConstraints { make in
-				make.top.left.right.bottom.equalToSuperview()
-			}
+			cell.contentView.addSubview(view)
+			
 		}else if let feedad = dataSouce.value(at: indexPath.row) as? SJMNativeExpressFeedAd{
 			let view = feedad.feedView
 			view.tag = 101
-			cell.contentView.addSubview(view)
-			view.snp.makeConstraints { make in
-				make.top.left.right.bottom.equalToSuperview()
-			}
-			
 			feedad.rootViewController = supervc
 			feedad.render()
+			cell.contentView.addSubview(view)
+			
 			
 		}
 		return cell
+	}
+	
+	public override func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+		
+		return .init(width: bounds.size.width, height: 120)
 	}
 	
 }

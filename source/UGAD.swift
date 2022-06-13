@@ -6,18 +6,18 @@
 //
 
 import Foundation
-//import UGNetwork
-import Alamofire
-import HandyJSON
-import UIKit
 
-
-public class UGAD{
+@objcMembers
+public class UGAD:NSObject{
 	public static let UGADFineshNotification = NSNotification.Name("UGADFineshNotification")
 	
 	public static let share = UGAD()
 	
-	public var data:UGADModel? = nil
+    public var data:UGADModel? = nil
+    
+    @objc public func isHasJili()->Bool{
+        return data?.jili != nil
+    }
 	
 	private var fineshBlock:(()->())? = nil
 	
@@ -33,9 +33,10 @@ public class UGAD{
 				switch result{
 				case .success(let value):
 					self.data = value.first
-				
+					log("获取广告数据成功",level: .info)
 				case .failure(let err):
-					log("获取广告信息失败:\(err.localizedDescription)",level: .error)
+					debugPrint(err)
+					log("获取广告数据失败",level: .error)
 					break
 				}
 				self.adDtatDidfinesh()

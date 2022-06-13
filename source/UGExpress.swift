@@ -25,17 +25,18 @@ public class UGExpress:NSObject{
 			}
 		}
 		if isunLike == true {
-			return
-		}
-	
-		guard let slot = UGAD.share.data?.xinxiliu else{
-			
+			log("信息流广告被用户关闭了", level: .debug)
 			return
 		}
 		guard let data =  UGAD.share.data else {
-		
+			log("信息流无广告数据", level: .debug)
 			return
 		}
+		guard let slot = data.xinxiliu else{
+			log("无信息流广告", level: .debug)
+			return
+		}
+		
 		if slot.status == 2{
 			return
 		}
@@ -53,7 +54,7 @@ public class UGExpress:NSObject{
 	}
 	
 	func load_chuangshanjia(_ slot:UGADModel.UGADItem){
-		
+		log("获取穿山甲信息流广告", level: .debug)
 		let adslot = BUAdSlot()
 		adslot.id = slot.adid
 	
@@ -72,7 +73,7 @@ public class UGExpress:NSObject{
 	}
 	
 	func load_sanjiaomao(_ slot:UGADModel.UGADItem){
-
+		log("获取三角猫信息流广告", level: .debug)
 		manage = (manage==nil) ?  SJMNativeExpressFeedAdManager.init(placementId: slot.adid ,size: .init(width: app.KWidth-30, height: 150)) : manage
 		guard let ma = manage as? SJMNativeExpressFeedAdManager else{
 			return
@@ -92,6 +93,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
+		log("穿山甲信息流广告加载失败 error:\(error)", level: .error)
 		UGServerLog.ug_log(type: .expressloaderror,info: ["tag":"ioschuanshanjia"])
 	}
 	// 渲染失败，网络原因或者硬件原因导致渲染失败,可以更换手机或者网络环境测试。建议升级到穿山甲平台最新版本
@@ -103,6 +105,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
+		log("穿山甲信息流广告渲染加载失败 error:\(error)", level: .error)
 		UGServerLog.ug_log(type: .expressshowerror,info: ["tag":"ioschuanshanjia"])
 		
 	}
