@@ -13,7 +13,7 @@ import BUAdSDK
 public class UGExpress:NSObject{
 	
 	public var updateBlock:((_ express:UGExpress)->())? = nil
-	public var views:[NSObject] = []
+	@objc public var views:[NSObject] = []
 	public var isunLike = false
 	public var manage:Any? = nil
 
