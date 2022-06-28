@@ -16,7 +16,8 @@ public class UGExpress:NSObject{
 	@objc public var views:[NSObject] = []
 	public var isunLike = false
 	public var manage:Any? = nil
-
+    public static let adexpressW = 150
+    public static let adexpressH = 150
 
 	public func reload(){
 		defer{

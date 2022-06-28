@@ -14,7 +14,8 @@ import BUAdSDK
     @objc public enum RewardedStatus:Int{
 		case error = 100
 		case skip = 101
-		case finesh = 102
+		case finish = 102
+        case userskip
 	}
 	var adview:Any? = nil
 	weak var supervc:UIViewController? = nil
@@ -141,7 +142,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	
 	// 广告素材物料加载成功
 	public func nativeExpressRewardedVideoAdDidLoad(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd) {
-		
+        log("激励广告-穿山甲 广告素材物料加载成功")
 	}
 	// 视频下载完成
 	public func nativeExpressRewardedVideoAdDidDownLoadVideo(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd) {
@@ -157,7 +158,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	public func nativeExpressRewardedVideoAdDidClose(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd) {
         log("激励广告-穿山甲用户关闭广告")
 		if let block = statusChange{
-			block(.finesh)
+			block(.finish)
 		}
 		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"ioschuanshanjia"])
 	
@@ -193,7 +194,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 	public func sjm_rewardVideoAdDidClose(_ rewardedVideoAd: SJMRewardVideoAd) {
         log("激励广告-三脚猫 广告关闭")
 		if let block = statusChange{
-			block(.finesh)
+			block(.finish)
 		}
 		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"iossanjiaomao"])
 		
