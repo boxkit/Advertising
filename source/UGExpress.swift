@@ -90,7 +90,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 			block(self)
 		}
 		log("穿山甲信息流广告加载失败 error:\(error.debugDescription)", level: .error)
-		UGServerLog.ug_log(type: .expressloaderror,info: ["tag":"ioschuanshanjia"])
+
 	}
 	// 渲染失败，网络原因或者硬件原因导致渲染失败,可以更换手机或者网络环境测试。建议升级到穿山甲平台最新版本
 	public func nativeExpressAdViewRenderFail(_ nativeExpressAdView: BUNativeExpressAdView, error: Error?) {
@@ -102,7 +102,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 			block(self)
 		}
 		log("穿山甲信息流广告渲染加载失败 error:\(error)", level: .error)
-		UGServerLog.ug_log(type: .expressshowerror,info: ["tag":"ioschuanshanjia"])
+	
 		
 	}
 	public func nativeExpressAdSuccess(toLoad nativeExpressAdManager: BUNativeExpressAdManager, views: [BUNativeExpressAdView]) {
@@ -110,7 +110,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
-		UGServerLog.ug_log(type: .expressshow,info: ["tag":"ioschuanshanjia"])
+
 	}
 	//  //【重要】需要在点击叉以后 在这个回调中移除视图，否则，会出现用户点击叉无效的情况
 	public func nativeExpressAdView(_ nativeExpressAdView: BUNativeExpressAdView, dislikeWithReason filterWords: [BUDislikeWords]) {
@@ -119,7 +119,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
-		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"ioschuanshanjia"])
+	
 	}
 	//【重要】若开发者收到此回调，代表穿山甲会主动关闭掉广告，广告移除后需要开发者对界面进行适配
 	public func nativeExpressAdViewDidRemoved(_ nativeExpressAdView: BUNativeExpressAdView) {
@@ -128,7 +128,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
-		UGServerLog.ug_log(type: .expresssysunlike ,info: ["tag":"ioschuanshanjia"])
+	
 	}
 }
 
@@ -141,7 +141,7 @@ extension UGExpress:SJMNativeExpressFeedAdManagerDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
-		UGServerLog.ug_log(type: .expressshow ,info: ["tag":"iossanjiaomao"])
+
 
 	}
 	public func sjm_nativeExpressFeedAdManager(_ adsManager: SJMNativeExpressFeedAdManager, didFailWithError error: Error?) {
@@ -149,7 +149,6 @@ extension UGExpress:SJMNativeExpressFeedAdManagerDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
-		UGServerLog.ug_log(type: .expressloaderror ,info: ["tag":"iossanjiaomao"])
 		
 	}
 }

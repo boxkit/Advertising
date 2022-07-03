@@ -51,11 +51,7 @@ public class UGSplash:NSObject{
 		}else if data.tag == "iossanjiaomao"{
 			splash_sanjiaomao(slot)
 		}
-		// 加载广告埋点
-		UGServerLog.ug_log(type: .splashload,info: ["slotID":slot.adid,
-											 "tag":data.tag,
-											 "adID":data.adid,
-											])
+
 	}
 	
 	func splash_chuanshanjia(_ slot:UGADModel.UGADItem){
@@ -79,7 +75,7 @@ public class UGSplash:NSObject{
 		app.KWindow?.addSubview(splashAdView)
 		adview = splashAdView
 		splashAdView.loadAdData()
-		UGServerLog.ug_log(type: .splashload,info: ["slotID":slot.adid,"tag":"ioschuanshanjia"])
+		
 	}
 	
 	func splash_sanjiaomao(_ slot:UGADModel.UGADItem){
@@ -96,9 +92,7 @@ public class UGSplash:NSObject{
 		splashAd.delegate = self;
 		splashAd.bottomViewSize = .init(width: app.KWidth, height: 50)
 		splashAd.loadAd()
-		UGServerLog.ug_log(type: .splashload,info: ["slotID":slot.adid,"tag":"iossanjiaomao"])
-		
-		
+
 	}
 	
 	func finish(state:SplashStatus){
@@ -114,7 +108,7 @@ extension UGSplash:BUSplashAdDelegate{
 	public func splashAdDidLoad(_ splashAd: BUSplashAdView) {
 		supervc?.view.addSubview(splashAd)
 		UserDefaults.standard.setValue(Date().toString(), forKey: "splash.showTime")
-		UGServerLog.ug_log(type: .splashshow,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
+
 		
 	}
 	
@@ -131,13 +125,12 @@ extension UGSplash:BUSplashAdDelegate{
 	public func splashAd(_ splashAd: BUSplashAdView, didFailWithError error: Error?) {
 		log("穿山甲开屏广告错误\(error)")
 		finish(state: .error)
-		
-		UGServerLog.ug_log(type: .splashloaderror,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
+
 	}
 		
 	public func splashAdWillClose(_ splashAd: BUSplashAdView) {
 		finish(state: .finish)
-		UGServerLog.ug_log(type: .splashhidden,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
+
 	}
 	
 }
@@ -147,25 +140,21 @@ extension UGSplash:SJMSplashAdDelegate{
 	public func sjm_splashAdDidLoad(_ splashAd: SJMSplashAd) {
 		splashAd.showAd(in: app.KWindow!, withBottomView: nil)
 		UserDefaults.standard.setValue(Date().toString(), forKey: "splash.showTime")
-		UGServerLog.ug_log(type: .splashshow,info: ["slotID":splashAd.placementId,
-											 "tag":"iossanjiaomao"])
+
 	}
 	public func sjm_splashAdCountdownEnd(_ splashAd: SJMSplashAd) {
 		finish(state: .finish)
-		UGServerLog.ug_log(type: .splashhidden,info: ["slotID":splashAd.placementId,
-											 "tag":"iossanjiaomao"])
+
 	}
 	public func sjm_splashAdClosed(_ splashAd: SJMSplashAd) {
 		finish(state: .finish)
-		UGServerLog.ug_log(type: .splashhidden, info: ["slotID":splashAd.placementId,
-											 "tag":"iossanjiaomao"])
+
 	}
 	
 	// 开屏广告错误
 	public func sjm_splashAdError(_ splashAd: SJMSplashAd, withError error: Error) {
 		UIView.debug(error.ug_localizedDescription )
 		finish(state: .error)
-		UGServerLog.ug_log(type: .splashloaderror,info: ["slotID":splashAd.placementId,
-											 "tag":"iossanjiaomao"])
+
 	}
 }

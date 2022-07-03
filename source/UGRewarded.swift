@@ -79,11 +79,7 @@ import BUAdSDK
 			}else if data.tag == "iossanjiaomao"{
 				rewarded_sanjiaomao(slot)
 			}
-			// 加载激励广告
-			UGServerLog.ug_log(type: .rewardedload,info: ["slotID":slot.adid,
-												 "tag":data.tag,
-												 "adID":data.adid,
-												])
+		
             
         }else{
             log("激励广告-代理返回不显示广告")
@@ -130,7 +126,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 		if let block = statusChange{
 			block(.error)
 		}
-		UGServerLog.ug_log(type: .rewardedloaderror,info: ["tag":"ioschuanshanjia"])
+	
 		
 	}
 	// 渲染失败，网络原因或者硬件原因导致渲染失败,可以更换手机或者网络环境测试。建议升级到穿山甲平台最新版本
@@ -139,7 +135,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 		if let block = statusChange{
 			block(.error)
 		}
-		UGServerLog.ug_log(type: .rewardedshowerror,info: ["tag":"ioschuanshanjia"])
+
 	}
 	
 	
@@ -154,8 +150,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 		}
         log("激励广告-穿山甲视频加载成功,开始显示")
 		rewardedVideoAd.show(fromRootViewController: vc)
-	
-		UGServerLog.ug_log(type: .expressshow,info: ["tag":"ioschuanshanjia"])
+
 	}
 	// 用户关闭广告时会触发此回调，注意：任何广告的关闭操作必须用户主动触发;
 	public func nativeExpressRewardedVideoAdDidClose(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd) {
@@ -170,7 +165,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 			}
 
 		}
-		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"ioschuanshanjia"])
+	
 	
 	
 	}
@@ -199,7 +194,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 			adview.show(in: vc)
 	
 		}
-		UGServerLog.ug_log(type: .expressshow,info: ["tag":"iossanjiaomao"])
+
 	
 	}
 	public func sjm_rewardVideoAdDidClose(_ rewardedVideoAd: SJMRewardVideoAd) {
@@ -207,7 +202,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 		if let block = statusChange{
 			block(.finesh)
 		}
-		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"iossanjiaomao"])
+	
 		
 	}
 	public func sjm_rewardVideoAd(_ rewardedVideoAd: SJMRewardVideoAd, didFailWithError error: Error) {
@@ -215,7 +210,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 		if let block = statusChange{
 			block(.error)
 		}
-		UGServerLog.ug_log(type: .expressloaderror,info: ["tag":"iossanjiaomao"])
+	
 	}
 	public func sjm_rewardVideoAdDidRewardEffective(_ rewardedVideoAd: SJMRewardVideoAd) {
         log("激励广告-三脚猫 触发有效激励")

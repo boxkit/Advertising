@@ -14,7 +14,6 @@ import Foundation
 @_exported import  BUAdSDK
 @_exported import  KSAdSDK
 @_exported import  SJMAdSDK
-@_exported import  UGServerLog
 @_exported import UGBase
 @_exported import UGNetwork
 @_exported import UGConfig

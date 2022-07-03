@@ -42,10 +42,7 @@ Pod::Spec.new do |spec|
   spec.dependency 'UGBase'
   spec.dependency 'UGConfig'
   spec.dependency 'UGAlert'
-  spec.dependency 'UGServerLog'
-  
-	
-	
+
 	
 	spec.prefix_header_contents = <<-EOS
 	
