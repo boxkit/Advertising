@@ -11,13 +11,13 @@ import UIKit
 
 
 public class UGSplash:NSObject{
-	public static let UGSplashFineshNotification = NSNotification.Name("UGSplashFineshNotification")
+	public static let UGSplashfinishNotification = NSNotification.Name("UGSplashfinishNotification")
 	
 	public static let share = UGSplash()
 	public enum SplashStatus:Int{
 		case error = 100
 		case skip = 101
-		case finesh = 102
+		case finish = 102
 		case none
 	}
 	
@@ -31,11 +31,11 @@ public class UGSplash:NSObject{
 		statusChange = block
 		supervc = vc
 		guard let data =  UGAD.share.data else {
-			finesh(state: .none)
+			finish(state: .none)
 			return
 		}
 		guard let slot = UGAD.share.data?.kaiping else{
-			finesh(state: .none)
+			finish(state: .none)
 			return
 		}
 		if slot.status == 2{
@@ -63,7 +63,7 @@ public class UGSplash:NSObject{
 		
 		if let date = UserDefaults.standard.string(forKey: "splash.showTime"),
 		   -(date.date().timeIntervalSinceNow)<slot.time.double() {
-			finesh(state: .skip)
+			finish(state: .skip)
 			return
 			
 		}
@@ -86,7 +86,7 @@ public class UGSplash:NSObject{
 	
 		if let date = UserDefaults.standard.string(forKey: "splash.showTime"),
 		   -(date.date().timeIntervalSinceNow)<slot.time.double() {
-			finesh(state: .skip)
+			finish(state: .skip)
 			return
 			
 		}
@@ -101,11 +101,11 @@ public class UGSplash:NSObject{
 		
 	}
 	
-	func finesh(state:SplashStatus){
+	func finish(state:SplashStatus){
 		if let block = statusChange{
 			block(state)
 		}
-		NotificationCenter.default.post(name:Self.UGSplashFineshNotification , object: nil)
+		NotificationCenter.default.post(name:Self.UGSplashfinishNotification , object: nil)
 	}
 }
 
@@ -130,13 +130,13 @@ extension UGSplash:BUSplashAdDelegate{
 	}
 	public func splashAd(_ splashAd: BUSplashAdView, didFailWithError error: Error?) {
 		log("穿山甲开屏广告错误\(error)")
-		finesh(state: .error)
+		finish(state: .error)
 		
 		UGServerLog.ug_log(type: .splashloaderror,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
 	}
 		
 	public func splashAdWillClose(_ splashAd: BUSplashAdView) {
-		finesh(state: .finesh)
+		finish(state: .finish)
 		UGServerLog.ug_log(type: .splashhidden,info: ["slotID":splashAd.slotID,"tag":"ioschuanshanjia"])
 	}
 	
@@ -151,12 +151,12 @@ extension UGSplash:SJMSplashAdDelegate{
 											 "tag":"iossanjiaomao"])
 	}
 	public func sjm_splashAdCountdownEnd(_ splashAd: SJMSplashAd) {
-		finesh(state: .finesh)
+		finish(state: .finish)
 		UGServerLog.ug_log(type: .splashhidden,info: ["slotID":splashAd.placementId,
 											 "tag":"iossanjiaomao"])
 	}
 	public func sjm_splashAdClosed(_ splashAd: SJMSplashAd) {
-		finesh(state: .finesh)
+		finish(state: .finish)
 		UGServerLog.ug_log(type: .splashhidden, info: ["slotID":splashAd.placementId,
 											 "tag":"iossanjiaomao"])
 	}
@@ -164,7 +164,7 @@ extension UGSplash:SJMSplashAdDelegate{
 	// 开屏广告错误
 	public func sjm_splashAdError(_ splashAd: SJMSplashAd, withError error: Error) {
 		UIView.debug(error.ug_localizedDescription )
-		finesh(state: .error)
+		finish(state: .error)
 		UGServerLog.ug_log(type: .splashloaderror,info: ["slotID":splashAd.placementId,
 											 "tag":"iossanjiaomao"])
 	}

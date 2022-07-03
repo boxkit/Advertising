@@ -9,7 +9,7 @@ import Foundation
 
 @objcMembers
 public class UGAD:NSObject{
-	public static let UGADFineshNotification = NSNotification.Name("UGADFineshNotification")
+	public static let UGADfinishNotification = NSNotification.Name("UGADfinishNotification")
 	
 	public static let share = UGAD()
 	
@@ -19,10 +19,10 @@ public class UGAD:NSObject{
         return data?.jili != nil
     }
 	
-	private var fineshBlock:(()->())? = nil
+	private var finishBlock:(()->())? = nil
 	
-	public func setUp(_ finesh:@escaping (()->())){
-		fineshBlock = finesh
+	public func setUp(_ finish:@escaping (()->())){
+		finishBlock = finish
 		cacheADDate()
 	}
 	
@@ -39,13 +39,13 @@ public class UGAD:NSObject{
 					log("获取广告数据失败",level: .error)
 					break
 				}
-				self.adDtatDidfinesh()
+				self.adDtatDidfinish()
 			}
 		
 	}
 	// 获取到广告后显示开屏广告
 	//	static
-	func adDtatDidfinesh(){
+	func adDtatDidfinish(){
 		
 		
 		if  data?.tag == "ioschuanshanjia"{
@@ -57,7 +57,7 @@ public class UGAD:NSObject{
 			SJMAdSDKManager.registerAppId(adid)
 		}
 
-		self.fineshBlock?()
+		self.finishBlock?()
 
 	}
 }
