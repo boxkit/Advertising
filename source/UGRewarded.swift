@@ -15,11 +15,13 @@ import BUAdSDK
 		case error = 100
 		case skip = 101
 		case finesh = 102
+		case userskip = 103
 	}
 	var adview:Any? = nil
 	weak var supervc:UIViewController? = nil
 	var statusChange:((_ status:RewardedStatus)->())? = nil
 	var ignoreTime = false
+	var isValidSucceed = false
 	/**
 	 显示激励广告
 	 */
@@ -27,6 +29,7 @@ import BUAdSDK
 					 ignore:Bool = false,
 					 willShow:(()->(Bool))? = nil,
 					 block:@escaping (_ status:RewardedStatus)->()){
+		isValidSucceed = false
 		ignoreTime = ignore
 		statusChange = block
 		supervc = vc
@@ -155,9 +158,14 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	}
 	// 用户关闭广告时会触发此回调，注意：任何广告的关闭操作必须用户主动触发;
 	public func nativeExpressRewardedVideoAdDidClose(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd) {
+		
         log("激励广告-穿山甲用户关闭广告")
 		if let block = statusChange{
-			block(.finesh)
+			if isValidSucceed{
+				block(.skip)
+			}else{
+				block(.userskip)
+			}
 		}
 		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"ioschuanshanjia"])
 	
@@ -166,6 +174,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 	
 	public func nativeExpressRewardedVideoAdServerRewardDidSucceed(_ rewardedVideoAd: BUNativeExpressRewardedVideoAd, verify: Bool) {
         log("激励广告-穿山甲触发有效激励")
+		isValidSucceed = true
 		if !ignoreTime && verify{
 			UserDefaults.standard.setValue(Date().toString(), forKey: "ugad.rewarded.showTime")
 		}

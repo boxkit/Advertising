@@ -11,7 +11,8 @@ import BUAdSDK
 
 // 信息流
 public class UGExpress:NSObject{
-	
+	@objc static public let adexpressH:CGFloat = 180.0
+	@objc static public let adexpressW:CGFloat = app.KWidth-16
 	public var updateBlock:((_ express:UGExpress)->())? = nil
 	@objc public var views:[NSObject] = []
 	public var isunLike = false
@@ -45,11 +46,6 @@ public class UGExpress:NSObject{
 		}else if data.tag == "iossanjiaomao"{
 			load_sanjiaomao(slot)
 		}
-		UGServerLog.ug_log(type: .expressload,info: ["slotID":slot.adid,
-											 "tag":data.tag,
-											 "adID":data.adid,
-											])
-		
 
 	}
 	
@@ -61,11 +57,11 @@ public class UGExpress:NSObject{
 		adslot.adType = .feed
 		adslot.imgSize = BUSize.init(by: .banner600_300)
 		adslot.position = .feed
-		manage = (manage==nil) ? BUNativeExpressAdManager.init(slot: adslot, adSize: .init(width: app.KWidth-30, height: 150)) : manage
+		manage = (manage==nil) ? BUNativeExpressAdManager.init(slot: adslot, adSize: .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)) : manage
 		guard let ma = manage as? BUNativeExpressAdManager else{
 			return
 		}
-		ma.adSize = .init(width: app.KWidth-30, height: 150)
+		ma.adSize = .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)
 		ma.delegate = self
 		ma.loadAdData(withCount: 3)
 		manage = ma
@@ -74,7 +70,7 @@ public class UGExpress:NSObject{
 	
 	func load_sanjiaomao(_ slot:UGADModel.UGADItem){
 		log("获取三角猫信息流广告", level: .debug)
-		manage = (manage==nil) ?  SJMNativeExpressFeedAdManager.init(placementId: slot.adid ,size: .init(width: app.KWidth-30, height: 150)) : manage
+		manage = (manage==nil) ?  SJMNativeExpressFeedAdManager.init(placementId: slot.adid ,size: .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)) : manage
 		guard let ma = manage as? SJMNativeExpressFeedAdManager else{
 			return
 		}
@@ -93,7 +89,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 		if let block = updateBlock{
 			block(self)
 		}
-		log("穿山甲信息流广告加载失败 error:\(error)", level: .error)
+		log("穿山甲信息流广告加载失败 error:\(error.debugDescription)", level: .error)
 		UGServerLog.ug_log(type: .expressloaderror,info: ["tag":"ioschuanshanjia"])
 	}
 	// 渲染失败，网络原因或者硬件原因导致渲染失败,可以更换手机或者网络环境测试。建议升级到穿山甲平台最新版本
