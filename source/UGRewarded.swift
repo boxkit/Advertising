@@ -205,7 +205,7 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 	public func sjm_rewardVideoAdDidClose(_ rewardedVideoAd: SJMRewardVideoAd) {
         log("激励广告-三脚猫 广告关闭")
 		if let block = statusChange{
-			block(.finish)
+			block(.finesh)
 		}
 		UGServerLog.ug_log(type: .expresshidden,info: ["tag":"iossanjiaomao"])
 		
