@@ -96,7 +96,7 @@ import BUAdSDK
 	func rewarded_chuanshanjia(_ slot:UGADModel.UGADItem){
         log("激励广告-加载穿山甲广告")
 		let model = BURewardedVideoModel()
-		model.userId = app.ug_udid
+		model.userId = app.uh_udid
 		let rewardedView = BUNativeExpressRewardedVideoAd.init(slotID: slot.adid, rewardedVideoModel: model)
 		rewardedView.delegate = self
 		rewardedView.loadData()
@@ -106,7 +106,7 @@ import BUAdSDK
 	func rewarded_sanjiaomao(_ slot:UGADModel.UGADItem){
         log("激励广告-加载三脚猫广告")
 		let model = SJMRewardVideoModel()
-		model.userId = app.ug_udid
+		model.userId = app.uh_udid
 		model.reward_name = word0008.loc
 		model.reward_amount = 10
 		let rewardedView = SJMRewardVideoAd.init(placementId:slot.adid, rewardedVideoModel: model)

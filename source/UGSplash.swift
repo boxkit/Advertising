@@ -153,7 +153,7 @@ extension UGSplash:SJMSplashAdDelegate{
 	
 	// 开屏广告错误
 	public func sjm_splashAdError(_ splashAd: SJMSplashAd, withError error: Error) {
-		UIView.debug(error.ug_localizedDescription )
+		UIView.debug(error.uh_localizedDescription )
 		finish(state: .error)
 
 	}

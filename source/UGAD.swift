@@ -51,11 +51,13 @@ public class UGAD:NSObject{
 		if  data?.tag == "ioschuanshanjia"{
 			BUAdSDKManager.setAppID(data?.adid)
 		}
+#if canImport(SJMAdSDK)
 		if  data?.tag == "iossanjiaomao",
 			let adid = data?.adid
 		{
 			SJMAdSDKManager.registerAppId(adid)
 		}
+#endif
 
 		self.finishBlock?()
 

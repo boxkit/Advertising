@@ -55,7 +55,7 @@ public extension UIViewController{
 	
 }
 extension Error{
-	var ug_localizedDescription: String {
+	var uh_localizedDescription: String {
 		let loca = self.localizedDescription
 		if loca.count>20{
 			return word0002.loc
@@ -73,7 +73,7 @@ extension UIViewController:BUSplashAdDelegate{
 		splashAd.alpha = 1
 	}
 	public func splashAd(_ splashAd: BUSplashAdView, didFailWithError error: Error?) {
-		UIView.error(error?.ug_localizedDescription ?? word0002.loc)
+		UIView.error(error?.uh_localizedDescription ?? word0002.loc)
 		splashAd.removeFromSuperview()
 	}
 	public func splashAdCountdown(toZero splashAd: BUSplashAdView) {
