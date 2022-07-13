@@ -12,9 +12,13 @@ import Foundation
 @_exported  import UIKit
 
 @_exported import  BUAdSDK
-@_exported import  KSAdSDK
-@_exported import  SJMAdSDK
+
+
 @_exported import UGBase
 @_exported import UGNetwork
 @_exported import UGConfig
 @_exported import UGAlert
+#if canImport(SJMAdSDK)
+@_exported import  KSAdSDK
+@_exported import  SJMAdSDK
+#endif

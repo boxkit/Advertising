@@ -67,7 +67,7 @@ public class UGExpress:NSObject{
 		manage = ma
 		
 	}
-	
+#if canImport(SJMAdSDK)
 	func load_sanjiaomao(_ slot:UGADModel.UGADItem){
 		log("获取三角猫信息流广告", level: .debug)
 		manage = (manage==nil) ?  SJMNativeExpressFeedAdManager.init(placementId: slot.adid ,size: .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)) : manage
@@ -80,6 +80,10 @@ public class UGExpress:NSObject{
 		manage = ma
 	
 	}
+#else
+    func load_sanjiaomao(_ slot:UGADModel.UGADItem){
+    }
+#endif
 	
 	
 }
@@ -132,6 +136,7 @@ extension UGExpress:BUNativeExpressAdViewDelegate{
 	}
 }
 
+#if canImport(SJMAdSDK)
 extension UGExpress:SJMNativeExpressFeedAdManagerDelegate{
 	public func sjm_nativeExpressFeedAdManagerSuccess(toLoad adsManager: SJMNativeExpressFeedAdManager, nativeAds feedAdDataArray: [SJMNativeExpressFeedAd]?) {
 		feedAdDataArray?.forEach({ item in
@@ -161,3 +166,4 @@ extension UGExpress:SJMNativeExpressFeedAdDelegate{
 		}
 	}
 }
+#endif

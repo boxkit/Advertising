@@ -13,8 +13,8 @@ Pod::Spec.new do |spec|
 	
 	spec.platform     = :ios, "11.0"
 
-	spec.vendored_frameworks = 'SJM/**/*.framework'
-	spec.vendored_libraries = 'SJM/**/*.a'
+#	spec.vendored_frameworks = 'SJM/**/*.framework'
+#	spec.vendored_libraries = 'SJM/**/*.a'
 	spec.frameworks = 'UIKit', 'MapKit', 'WebKit', 'MediaPlayer', 'CoreLocation', 'AdSupport', 'CoreMedia', 'AVFoundation', 'CoreTelephony', 'StoreKit', 'SystemConfiguration', 'MobileCoreServices', 'CoreMotion', 'Accelerate','AudioToolbox','JavaScriptCore','Security','CoreImage','AudioToolbox','ImageIO','QuartzCore','CoreGraphics','CoreText'
 	
 	spec.weak_framework = 'AppTrackingTransparency'
@@ -27,7 +27,7 @@ Pod::Spec.new do |spec|
 	spec.source_files  =  [
   "Advertising.swift",
   "source/**/*.{h,m,swift}",
-  "SJM/SJMGDT/*.{h,m,swift}"
+#  "SJM/SJMGDT/*.{h,m,swift}"
   ]
 	spec.static_framework = true
 	

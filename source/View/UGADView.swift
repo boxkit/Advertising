@@ -148,15 +148,18 @@ public class UGADBandleView:UGBandle{
 			view.rootViewController = supervc
 			cell.contentView.addSubview(view)
 			
-		}else if let feedad = dataSouce.value(at: indexPath.row) as? SJMNativeExpressFeedAd{
+		}
+        #if canImport(SJMAdSDK)
+//        else if let feedad = dataSouce.value(at: indexPath.row) as? SJMNativeExpressFeedAd{
 			let view = feedad.feedView
 			view.tag = 101
 			feedad.rootViewController = supervc
 			feedad.render()
 			cell.contentView.addSubview(view)
-			
-			
-		}
+
+//		}
+        #endif
+       
 		return cell
 	}
 	

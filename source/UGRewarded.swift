@@ -102,7 +102,7 @@ import BUAdSDK
 		rewardedView.loadData()
 		adview = rewardedView
 	}
-	
+#if canImport(SJMAdSDK)
 	func rewarded_sanjiaomao(_ slot:UGADModel.UGADItem){
         log("激励广告-加载三脚猫广告")
 		let model = SJMRewardVideoModel()
@@ -115,7 +115,11 @@ import BUAdSDK
 		rewardedView.load()
 		adview = rewardedView
 	}
-	
+#else
+    func rewarded_sanjiaomao(_ slot:UGADModel.UGADItem){
+    }
+#endif
+    
 }
 
 // 信息流的委托
@@ -180,7 +184,7 @@ extension UGRewarded:BUNativeExpressRewardedVideoAdDelegate{
 
 
 }
-
+#if canImport(SJMAdSDK)
 
 extension UGRewarded:SJMRewardVideoAdDelegate{
 	// 视频数据下载成功回调，已经下载过的视频会直接回调
@@ -220,3 +224,4 @@ extension UGRewarded:SJMRewardVideoAdDelegate{
 	}
 	
 }
+#endif

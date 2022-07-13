@@ -77,7 +77,7 @@ public class UGSplash:NSObject{
 		splashAdView.loadAdData()
 		
 	}
-	
+#if canImport(SJMAdSDK)
 	func splash_sanjiaomao(_ slot:UGADModel.UGADItem){
 	
 		if let date = UserDefaults.standard.string(forKey: "splash.showTime"),
@@ -94,7 +94,10 @@ public class UGSplash:NSObject{
 		splashAd.loadAd()
 
 	}
-	
+#else
+    func splash_sanjiaomao(_ slot:UGADModel.UGADItem){
+    }
+#endif
 	func finish(state:SplashStatus){
 		if let block = statusChange{
 			block(state)
@@ -134,7 +137,7 @@ extension UGSplash:BUSplashAdDelegate{
 	}
 	
 }
-
+#if canImport(SJMAdSDK)
 extension UGSplash:SJMSplashAdDelegate{
 	//  开屏广告素材加载成功
 	public func sjm_splashAdDidLoad(_ splashAd: SJMSplashAd) {
@@ -158,3 +161,4 @@ extension UGSplash:SJMSplashAdDelegate{
 
 	}
 }
+#endif
