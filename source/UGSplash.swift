@@ -71,10 +71,13 @@ public class UGSplash:NSObject{
 		splashAdView.delegate = self
 		
 		splashAdView.rootViewController = supervc
+		splashAdView.supportCardView = true
+
 		
 		app.KWindow?.addSubview(splashAdView)
 		adview = splashAdView
 		splashAdView.loadAdData()
+
 		
 	}
 #if canImport(SJMAdSDK)

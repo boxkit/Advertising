@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 	
 	spec.name         = "Advertising"
-	spec.version      = "1.0.0"
+	spec.version      = "2.0.0"
 	spec.summary      = "用户信息"
 	
 	spec.description  = "ios用户信息"
@@ -36,6 +36,7 @@ Pod::Spec.new do |spec|
 	}
 	
 	spec.dependency 'Ads-CN'
+#	spec.dependency 'Bytedance-UnionAD'
 	spec.dependency 'HandyJSON'
   
   spec.dependency 'UGNetwork'
