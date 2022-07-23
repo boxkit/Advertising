@@ -151,11 +151,11 @@ public class UGADBandleView:UGBandle{
 		}
         #if canImport(SJMAdSDK)
 //        else if let feedad = dataSouce.value(at: indexPath.row) as? SJMNativeExpressFeedAd{
-			let view = feedad.feedView
-			view.tag = 101
-			feedad.rootViewController = supervc
-			feedad.render()
-			cell.contentView.addSubview(view)
+//			let view = feedad.feedView
+//			view.tag = 101
+//			feedad.rootViewController = supervc
+//			feedad.render()
+//			cell.contentView.addSubview(view)
 
 //		}
         #endif
