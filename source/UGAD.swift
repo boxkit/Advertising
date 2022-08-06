@@ -6,7 +6,7 @@
 //
 
 import Foundation
-
+import AppTrackingTransparency
 @objcMembers
 public class UGAD:NSObject{
 	public static let UGADfinishNotification = NSNotification.Name("UGADfinishNotification")
@@ -46,7 +46,12 @@ public class UGAD:NSObject{
 	// 获取到广告后显示开屏广告
 	//	static
 	func adDtatDidfinish(){
-		
+        if #available(iOS 14, *) {
+            ATTrackingManager.requestTrackingAuthorization { status in
+                
+            }
+        }
+ 
 		
 		if  data?.tag == "ioschuanshanjia"{
 			BUAdSDKManager.setAppID(data?.adid)

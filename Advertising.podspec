@@ -13,8 +13,6 @@ Pod::Spec.new do |spec|
 	
 	spec.platform     = :ios, "11.0"
 
-#	spec.vendored_frameworks = 'SJM/**/*.framework'
-#	spec.vendored_libraries = 'SJM/**/*.a'
 	spec.frameworks = 'UIKit', 'MapKit', 'WebKit', 'MediaPlayer', 'CoreLocation', 'AdSupport', 'CoreMedia', 'AVFoundation', 'CoreTelephony', 'StoreKit', 'SystemConfiguration', 'MobileCoreServices', 'CoreMotion', 'Accelerate','AudioToolbox','JavaScriptCore','Security','CoreImage','AudioToolbox','ImageIO','QuartzCore','CoreGraphics','CoreText'
 	
 	spec.weak_framework = 'AppTrackingTransparency'
@@ -24,11 +22,7 @@ Pod::Spec.new do |spec|
 
 	spec.source       = { :git => "http://github/ubungit.git", :tag => "#{spec.version}" }
 	
-	spec.source_files  =  [
-  "Advertising.swift",
-  "source/**/*.{h,m,swift}",
-#  "SJM/SJMGDT/*.{h,m,swift}"
-  ]
+
 	spec.static_framework = true
 	
 	spec.pod_target_xcconfig = {
@@ -36,13 +30,40 @@ Pod::Spec.new do |spec|
 	}
 	
 	spec.dependency 'Ads-CN'
-#	spec.dependency 'Bytedance-UnionAD'
 	spec.dependency 'HandyJSON'
   
   spec.dependency 'UGNetwork'
   spec.dependency 'UGBase'
   spec.dependency 'UGConfig'
   spec.dependency 'UGAlert'
+  
+  
+  spec.default_subspec = 'CSJ4600'
+  
+  
+  spec.subspec 'CSJ4700' do |s|
+    s.source_files  =  [
+    "Advertising.swift",
+    "source/**/*.{h,m,swift}",
+    "CSJ4700/**/*.{h,m,swift}",
+    ]
+  end
+   # 穿山甲4700以前
+  spec.subspec 'CSJ4600' do |s|
+    s.source_files  =  [
+    "Advertising.swift",
+    "source/**/*.{h,m,swift}",
+    "CSJ4600/**/*.{h,m,swift}",
+    ]
+  end
+  
+  spec.subspec 'CSJSJM' do |s|
+    s.source_files  =  [
+    "Advertising.swift",
+    "source/**/*.{h,m,swift}",
+    "SJM/SJMGDT/*.{h,m,swift}"
+    ]
+  end
 
 	
 	spec.prefix_header_contents = <<-EOS
