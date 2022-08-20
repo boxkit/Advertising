@@ -7,14 +7,14 @@
 
 import Foundation
 
-
+let defulacutDown = 30
 
 @objc public protocol UGADBandleCellDelegate:NSObjectProtocol{
 	func isEnableReload()->Bool
 	func bandleCellDidUpdate(express:UGExpress)
 }
 public class UGADBandleCell:UICollectionViewCell{
-	private var cutDown = 30
+	private var cutDown = defulacutDown
 	public weak var delegate:UGADBandleCellDelegate?{
 		didSet{
 			if let vc = delegate as? UIViewController{
@@ -63,11 +63,12 @@ public class UGADBandleCell:UICollectionViewCell{
 	@objc open func globalDoit(){
 		cutDown -= 1
 		if cutDown<=0{
-			cutDown = 30
+			cutDown = defulacutDown
 			
 			if delegate?.isEnableReload() == false{
 				return
 			}
+            
 			express.reload()
 		}
 		
@@ -106,7 +107,7 @@ public class UGADBandleView:UGBandle{
 	
 	private var isdisshow = false;
 	private var adcutDown = 30
-	public var supervc:UIViewController? = nil
+	public weak var supervc:UIViewController? = nil
 	
 	override init(frame: CGRect) {
 		super.init(frame: frame)
