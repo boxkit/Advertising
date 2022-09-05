@@ -55,7 +55,6 @@ public class UGAD:NSObject{
 		
 		if  data?.tag == "ioschuanshanjia"{
 			BUAdSDKManager.setAppID(data?.adid)
-			BUAdSDKManager.setThemeStatus(.night)
 		}
 #if canImport(SJMAdSDK)
 		if  data?.tag == "iossanjiaomao",

@@ -7,12 +7,15 @@
 
 import Foundation
 import BUAdSDK
+import UGExtension
 
 
 // 信息流
 public class UGExpress:NSObject{
-	@objc static public let adexpressH:CGFloat = 180.0
-	@objc static public let adexpressW:CGFloat = app.KWidth-16
+    @objc static public var adexpressW:CGFloat{
+        app.KWidth
+    }
+	@objc static public let adexpressH:CGFloat = 240
 	public var updateBlock:((_ express:UGExpress)->())? = nil
 	@objc public var views:[NSObject] = []
 	public var isunLike = false
@@ -54,14 +57,13 @@ public class UGExpress:NSObject{
 		let adslot = BUAdSlot()
 		adslot.id = slot.adid
 	
-		adslot.adType = .feed
-		adslot.imgSize = BUSize.init(by: .banner600_300)
-		adslot.position = .feed
-		manage = (manage==nil) ? BUNativeExpressAdManager.init(slot: adslot, adSize: .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)) : manage
+        adslot.adType = .feed
+        adslot.imgSize = BUSize(by: .drawFullScreen)
+		adslot.position = .top
+		manage = (manage==nil) ? BUNativeExpressAdManager.init(slot: adslot ,adSize: .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)) : manage
 		guard let ma = manage as? BUNativeExpressAdManager else{
 			return
 		}
-		ma.adSize = .init(width: UGExpress.adexpressW, height: UGExpress.adexpressH)
 		ma.delegate = self
 		ma.loadAdData(withCount: 3)
 		manage = ma

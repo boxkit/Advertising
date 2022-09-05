@@ -38,18 +38,18 @@ Pod::Spec.new do |spec|
   spec.dependency 'UGAlert'
   
   
-  spec.default_subspec = 'CSJ4600'
+  spec.default_subspec = 'CSJ4700'
   
   
-#  spec.subspec 'CSJ4700' do |s|
-#    
-#    spec.dependency 'Ads-CN-Beta'
-#    s.source_files  =  [
-#    "Advertising.swift",
-#    "source/**/*.{h,m,swift}",
-#    "CSJ4700/**/*.{h,m,swift}",
-#    ]
-#  end
+  spec.subspec 'CSJ4700' do |s|
+    
+    spec.dependency 'Ads-CN'
+    s.source_files  =  [
+    "Advertising.swift",
+    "source/**/*.{h,m,swift}",
+    "CSJ4700/**/*.{h,m,swift}",
+    ]
+  end
    # 穿山甲4700以前
   spec.subspec 'CSJ4600' do |s|
     spec.dependency 'Ads-CN'

@@ -51,6 +51,7 @@ public class UGADCollectionView:UIView{
 		itemview.snp.makeConstraints { make in
 			make.edges.equalToSuperview()
 		}
+        backgroundColor = UIColor.black.withAlphaComponent(0.05)
 	}
 	
 	@objc open func globalDoit(){

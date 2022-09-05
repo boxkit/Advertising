@@ -67,9 +67,10 @@ public class UGSplash:NSObject{
 		let frame = UIScreen.main.bounds
 //		let splashAdView = BUSplashAd BUSplashAdView(slotID: slot.adid, frame: frame)
         let splashAdView = BUSplashAd(slotID: slot.adid, adSize: frame.size)
-		splashAdView.tolerateTimeout = 100
+		splashAdView.tolerateTimeout = 3
 		splashAdView.delegate = self
 		splashAdView.supportCardView = true
+        
 		adview = splashAdView
         splashAdView.loadData()
 
@@ -110,12 +111,14 @@ extension UGSplash:BUSplashAdDelegate{
     
     // 返回的错误码(error)表示广告加载失败的原因，所有错误码详情请见链接Link 。
     public func splashAdLoadFail(_ splashAd: BUSplashAd, error: BUAdError?) {
-        log("穿山甲开屏广告错误\(error.debugDescription)")
+        log("穿山甲开屏广告错误:\(error.debugDescription)")
         finish(state: .error)
     }
     // 广告加载成功回调
     public func splashAdLoadSuccess(_ splashAd: BUSplashAd) {
-        
+  
+        splashAd .showSplashView(inRootViewController: (app.KWindow?.rootViewController)!)
+       
     }
     public func splashAdWillShow(_ splashAd: BUSplashAd) {
         
@@ -124,10 +127,10 @@ extension UGSplash:BUSplashAdDelegate{
         finish(state: .finish)
     }
     public func splashAdDidClose(_ splashAd: BUSplashAd, closeType: BUSplashAdCloseType) {
-        
+        finish(state: .finish)
     }
     public func splashDidCloseOtherController(_ splashAd: BUSplashAd, interactionType: BUInteractionType) {
-        
+        finish(state: .finish)
     }
      // SDK渲染开屏广告渲染成功回调
     public func splashAdRenderSuccess(_ splashAd: BUSplashAd) {
@@ -135,7 +138,8 @@ extension UGSplash:BUSplashAdDelegate{
     }
     // SDK渲染开屏广告渲染失败回调
     public func splashAdRenderFail(_ splashAd: BUSplashAd, error: BUAdError?) {
-        
+        log("穿山甲开屏广告错误\(error.debugDescription)")
+        finish(state: .error)
     }
     // 视频广告播放完毕回调
     public func splashVideoAdDidPlayFinish(_ splashAd: BUSplashAd, didFailWithError error: Error) {
