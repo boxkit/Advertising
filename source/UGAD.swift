@@ -7,11 +7,14 @@
 
 import Foundation
 import AppTrackingTransparency
+import Alamofire
 @objcMembers
 public class UGAD:NSObject{
 	public static let UGADfinishNotification = NSNotification.Name("UGADfinishNotification")
-	
+    
 	public static let share = UGAD()
+    
+  
 	
     public var data:UGADModel? = nil
     
@@ -20,13 +23,20 @@ public class UGAD:NSObject{
     }
 	
 	private var finishBlock:(()->())? = nil
+    
+    let networkReachabilitymanager = NetworkReachabilityManager()
 	
 	public func setUp(_ finish:@escaping (()->())){
 		finishBlock = finish
-		cacheADDate()
+ 
+            self.cacheADDate(isSetup: true)
+  
+            
+       
+	
 	}
 	
-	func cacheADDate(){
+    func cacheADDate(isSetup:Bool){
 		AF.api_adList()
 			.responseModel([UGADModel].self) {[weak self] result in
 				guard let self = self else {return}
@@ -40,18 +50,19 @@ public class UGAD:NSObject{
 					break
 				}
 				self.adDtatDidfinish()
+                if isSetup{
+                    self.finishBlock?()
+                }
+                if self.data == nil{
+                    self.listening()
+                }
 			}
 		
 	}
 	// 获取到广告后显示开屏广告
 	//	static
 	func adDtatDidfinish(){
-        if #available(iOS 14, *) {
-            ATTrackingManager.requestTrackingAuthorization { status in
-                
-            }
-        }
- 
+      
 		
 		if  data?.tag == "ioschuanshanjia"{
 			BUAdSDKManager.setAppID(data?.adid)
@@ -63,10 +74,17 @@ public class UGAD:NSObject{
 			SJMAdSDKManager.registerAppId(adid)
 		}
 #endif
+       
 
-		self.finishBlock?()
-
-	}
+    }
+    
+    private func listening(){
+        networkReachabilitymanager?.startListening(onUpdatePerforming: {[weak self] status in
+            if self?.data == nil{
+                self?.cacheADDate(isSetup: false)
+            }
+        })
+    }
 }
 
 
