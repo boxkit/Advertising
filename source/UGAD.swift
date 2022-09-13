@@ -80,7 +80,7 @@ public class UGAD:NSObject{
     
     private func listening(){
         networkReachabilitymanager?.startListening(onUpdatePerforming: {[weak self] status in
-            if self?.data == nil{
+            if self?.data == nil && status != .unknown {
                 self?.cacheADDate(isSetup: false)
             }
         })

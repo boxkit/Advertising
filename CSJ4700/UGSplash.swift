@@ -111,7 +111,7 @@ extension UGSplash:BUSplashAdDelegate{
     
     // 返回的错误码(error)表示广告加载失败的原因，所有错误码详情请见链接Link 。
     public func splashAdLoadFail(_ splashAd: BUSplashAd, error: BUAdError?) {
-        log("穿山甲开屏广告错误:\(error.debugDescription)")
+        log("穿山甲开屏广告错误:splashAdLoadFail")
         finish(state: .error)
     }
     // 广告加载成功回调
