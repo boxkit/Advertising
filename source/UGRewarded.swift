@@ -23,6 +23,38 @@ import BUAdSDK
 	var statusChange:((_ status:RewardedStatus)->())? = nil
 	var ignoreTime = false
 	var isValidSucceed = false
+	// 壳上面显示激励广告
+	@objc public func outshow(_ vc:UIViewController,
+				 message:String,
+					doblock:@escaping ()->()){
+		
+		if let date = UserDefaults.standard.string(forKey: "ugad.rewarded.outshow"){
+			let abs = (date.date().timeIntervalSinceNow)+60*10
+			
+			if abs>0{
+				log("激励广告-距离上次广告相隔时间小于1小时")
+				doblock()
+				return
+			}
+		}
+		if UGAD.share.data?.jili != nil{
+			let alert = UIAlertController(title: "提示", message: message, preferredStyle: .alert)
+			let commit = UIAlertAction(title: "观看", style: .destructive) { _ in
+				UserDefaults.standard.setValue(Date().toString(), forKey: "ugad.rewarded.outshow")
+				UGRewarded.share.show(vc,ignore: true, willShow: {
+					return true
+				}) {status in
+					doblock()
+				}
+			}
+			let cancle = UIAlertAction(title: "取消", style: .cancel) {_ in                 }
+			alert.addAction(commit)
+			alert.addAction(cancle)
+			vc.present(alert, animated: true, completion: nil)
+		}else{
+			doblock()
+		}
+	}
 	/**
 	 显示激励广告
 	 */
@@ -91,6 +123,7 @@ import BUAdSDK
 
 	
 	}
+
 	
 	
 	func rewarded_chuanshanjia(_ slot:UGADModel.UGADItem){
