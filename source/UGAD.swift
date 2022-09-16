@@ -26,15 +26,10 @@ public class UGAD:NSObject{
     
     let networkReachabilitymanager = NetworkReachabilityManager()
 	
-	public func setUp(_ finish:@escaping (()->())){
-		finishBlock = finish
- 
-            self.cacheADDate(isSetup: true)
-  
-            
-       
-	
-	}
+    public func setUp(_ finish:@escaping (()->())){
+        finishBlock = finish
+        self.cacheADDate(isSetup: true)
+    }
 	
     func cacheADDate(isSetup:Bool){
 		AF.api_adList()
