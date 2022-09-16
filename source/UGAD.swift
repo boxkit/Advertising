@@ -30,10 +30,12 @@ public class UGAD:NSObject{
 	
     public func setUp(_ finish:@escaping (()->())){
         finishBlock = finish
+       
         self.cacheADDate(isSetup: true)
     }
 	
     func cacheADDate(isSetup:Bool){
+        
 		AF.api_adList()
 			.responseModel([UGADModel].self) {[weak self] result in
 				guard let self = self else {return}
@@ -53,14 +55,14 @@ public class UGAD:NSObject{
 				} else {
 					self.adDtatDidfinish()
 				}
-				
-			
+	
                 if isSetup{
+                    if self.data == nil{
+                        self.listening()
+                    }
                     self.finishBlock?()
                 }
-                if self.data == nil{
-                    self.listening()
-                }
+                
 			}
 		
 	}

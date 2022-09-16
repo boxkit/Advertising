@@ -21,34 +21,35 @@ public class UGExpress:NSObject{
 	public var isunLike = false
 	public var manage:Any? = nil
 
-
 	public func reload(){
-		defer{
-			if let block = updateBlock{
-				block(self)
-			}
-		}
+        
 		if isunLike == true {
 			log("信息流广告被用户关闭了", level: .debug)
+            updateBlock?(self)
 			return
 		}
 		guard let data =  UGAD.share.data else {
 			log("信息流无广告数据", level: .debug)
+            updateBlock?(self)
 			return
 		}
 		guard let slot = data.xinxiliu else{
 			log("无信息流广告", level: .debug)
+            updateBlock?(self)
 			return
 		}
 		
 		if slot.status == 2{
+            updateBlock?(self)
 			return
 		}
+       
 		if data.tag == "ioschuanshanjia"{
 			load_chuangshanjia(slot)
 		}else if data.tag == "iossanjiaomao"{
 			load_sanjiaomao(slot)
 		}
+       
 
 	}
 	

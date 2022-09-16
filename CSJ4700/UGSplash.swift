@@ -44,8 +44,9 @@ public class UGSplash:NSObject{
 			}
 			return
 		}
-		
-	
+     
+    
+        
 		if data.tag == "ioschuanshanjia"{
 			splash_chuanshanjia(slot)
 		}else if data.tag == "iossanjiaomao"{
