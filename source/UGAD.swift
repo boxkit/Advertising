@@ -6,8 +6,10 @@
 //
 
 import Foundation
-import AppTrackingTransparency
 import Alamofire
+import AppTrackingTransparency
+import AdSupport
+
 @objcMembers
 public class UGAD:NSObject{
 	public static let UGADfinishNotification = NSNotification.Name("UGADfinishNotification")
@@ -44,7 +46,15 @@ public class UGAD:NSObject{
 					log("获取广告数据失败",level: .error)
 					break
 				}
-				self.adDtatDidfinish()
+				if #available(iOS 14, *) {
+					ATTrackingManager.requestTrackingAuthorization { status in
+						self.adDtatDidfinish()
+					}
+				} else {
+					self.adDtatDidfinish()
+				}
+				
+			
                 if isSetup{
                     self.finishBlock?()
                 }
@@ -57,8 +67,7 @@ public class UGAD:NSObject{
 	// 获取到广告后显示开屏广告
 	//	static
 	func adDtatDidfinish(){
-      
-		
+	
 		if  data?.tag == "ioschuanshanjia"{
 			BUAdSDKManager.setAppID(data?.adid)
 		}
