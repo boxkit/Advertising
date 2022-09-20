@@ -172,4 +172,71 @@ public class UGADBandleView:UGBandle{
 }
 
 
+public class UGADBandleTableCell:UITableViewCell{
+    private var cutDown = defulacutDown
+    public weak var delegate:UGADBandleCellDelegate?{
+        didSet{
+            if let vc = delegate as? UIViewController{
+                itemview.supervc = vc
+            }
+        }
+    }
+    
+    public lazy var express: UGExpress = {
+        let ex = UGExpress()
+        ex.updateBlock = ({ [weak self] statue in
+            guard let self = self else {return}
+            self.itemview.dataSouce = self.express.views
+            self.itemview.reloadData()
+            self.delegate?.bandleCellDidUpdate(express: ex)
+            
+        })
+        return ex
+    }()
+    lazy var itemview: UGADBandleView = {
+        let view = UGADBandleView()
+        return view
+    }()
+    public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+  
+        NotificationCenter.default.addObserver(self, selector: #selector(globalDoit), name: UIApplication.timerNotification, object: nil)
+        contentView.addSubview(itemview)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+            self.express.reload()
+        }
+        itemview.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+    }
+    public func reloadData(){
+        
+        itemview.snp.remakeConstraints() { make in
+            make.edges.equalToSuperview()
+        }
+    
+        itemview.reloadData()
+
+    }
+    
+    @objc open func globalDoit(){
+        cutDown -= 1
+        if cutDown<=0{
+            cutDown = defulacutDown
+            
+            if delegate?.isEnableReload() == false{
+                return
+            }
+            
+            express.reload()
+        }
+        
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+}
 
