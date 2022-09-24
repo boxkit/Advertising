@@ -6,7 +6,7 @@
 //
 // 激励广告
 import Foundation
-import BUAdSDK
+
 
 @objc public class UGRewarded:NSObject{
 	
