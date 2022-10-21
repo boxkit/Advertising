@@ -23,6 +23,9 @@ public class UGAD:NSObject{
     @objc public func isHasJili()->Bool{
         return data?.jili != nil
     }
+    @objc public func isHasxinxi()->Bool{
+        return data?.xinxiliu != nil
+    }
 	
 	private var finishBlock:(()->())? = nil
     
@@ -42,10 +45,13 @@ public class UGAD:NSObject{
 				switch result{
 				case .success(let value):
 					self.data = value.first
-					log("获取广告数据成功",level: .info)
-				case .failure(let err):
-					debugPrint(err)
+#if DEBUG
+                    log("获取广告数据成功",level: .info)
+#endif
+				case .failure(let _):
+#if DEBUG
 					log("获取广告数据失败",level: .error)
+#endif
 					break
 				}
 				if #available(iOS 14, *) {
@@ -133,7 +139,7 @@ public struct UGADModel:HandyJSON{
 	public var jili:UGADItem?{
 		list.filter { $0.tag == "jili"}.first
 	}
-	var xinxiliu:UGADItem?{
+    public  var xinxiliu:UGADItem?{
 		list.filter { $0.tag == "xinxiliu"}.first
 	}
 

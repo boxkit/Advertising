@@ -24,7 +24,9 @@ public class UGExpress:NSObject{
 	public func reload(){
         
 		if isunLike == true {
+#if DEBUG
 			log("信息流广告被用户关闭了", level: .debug)
+ #endif
             updateBlock?(self)
 			return
 		}

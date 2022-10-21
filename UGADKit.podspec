@@ -1,7 +1,7 @@
 Pod::Spec.new do |spec|
 	
-	spec.name         = "Advertising"
-	spec.version      = "2.0.0"
+	spec.name         = "UGADKit"
+	spec.version      = "3.0.0"
 	spec.summary      = "用户信息"
 	
 	spec.description  = "ios用户信息"
@@ -36,37 +36,21 @@ Pod::Spec.new do |spec|
   spec.dependency 'UGBase'
   spec.dependency 'UGConfig'
   spec.dependency 'UGAlert'
+  spec.dependency 'Ads-CN'
+  spec.source_files  =  [
+    "UGADKit.swift",
+    "source/**/*.{h,m,swift}"
+  ]
+ 
+
   
-  
-  spec.default_subspec = 'CSJ4700'
-  
-  
-  spec.subspec 'CSJ4700' do |s|
-    
-    spec.dependency 'Ads-CN'
-    s.source_files  =  [
-    "Advertising.swift",
-    "source/**/*.{h,m,swift}",
-    "CSJ4700/**/*.{h,m,swift}",
-    ]
-  end
-   # 穿山甲4700以前
-  spec.subspec 'CSJ4600' do |s|
-    spec.dependency 'Ads-CN'
-    s.source_files  =  [
-    "Advertising.swift",
-    "source/**/*.{h,m,swift}",
-    "CSJ4600/**/*.{h,m,swift}",
-    ]
-  end
-  
-  spec.subspec 'CSJSJM' do |s|
-    s.source_files  =  [
-    "Advertising.swift",
-    "source/**/*.{h,m,swift}",
-    "SJM/SJMGDT/*.{h,m,swift}"
-    ]
-  end
+#  spec.subspec 'CSJSJM' do |s|
+#    s.source_files  =  [
+#    "UGADKit.swift",
+#    "source/**/*.{h,m,swift}",
+#    "SJM/SJMGDT/*.{h,m,swift}"
+#    ]
+#  end
 
 	
 	spec.prefix_header_contents = <<-EOS

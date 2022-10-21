@@ -29,10 +29,17 @@ import Foundation
 					doblock:@escaping ()->()){
 		
 		if let date = UserDefaults.standard.string(forKey: "ugad.rewarded.outshow"){
-			let abs = (date.date().timeIntervalSinceNow)+60*10
+            #if DEBUG
+            let c = 10.0
+            #else
+            let c = 60*10.0
+            #endif
+			let abs = (date.date().timeIntervalSinceNow)+c
 			
 			if abs>0{
+#if DEBUG
 				log("激励广告-距离上次广告相隔时间小于1小时")
+#endif
 				doblock()
 				return
 			}
