@@ -30,7 +30,7 @@ import Foundation
 		
 		if let date = UserDefaults.standard.string(forKey: "ugad.rewarded.outshow"){
             #if DEBUG
-            let c = 10.0
+            let c = 10.0*60
             #else
             let c = 60*10.0
             #endif
