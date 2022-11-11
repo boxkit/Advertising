@@ -12,9 +12,7 @@ import UGExtension
 
 // 信息流
 public class UGExpress:NSObject{
-    @objc static public var adexpressW:CGFloat{
-        app.KWidth
-    }
+    @objc static public var adexpressW = app.KWidth-32
 	@objc static public let adexpressH:CGFloat = 240
 	public var updateBlock:((_ express:UGExpress)->())? = nil
 	@objc public var views:[NSObject] = []

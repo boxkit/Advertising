@@ -117,7 +117,9 @@ import Foundation
 				rewarded_chuanshanjia(slot)
 			}else if data.tag == "iossanjiaomao"{
 				rewarded_sanjiaomao(slot)
-			}
+            }else{
+                block(.error)
+            }
 		
             
         }else{
