@@ -78,6 +78,7 @@ public class UGAD:NSObject{
 	
 		if  data?.tag == "ioschuanshanjia"{
 			BUAdSDKManager.setAppID(data?.adid)
+            UGRewarded.share.cacheLoad()
 		}
 #if canImport(SJMAdSDK)
 		if  data?.tag == "iossanjiaomao",

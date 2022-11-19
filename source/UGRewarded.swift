@@ -133,7 +133,28 @@ import Foundation
 	
 	}
 
-	
+    func cacheLoad(){
+        guard UGAD.share.data != nil else {
+            log("激励广告-无广告数据")
+            if let block = statusChange{
+                block(.skip)
+            }
+            return
+        }
+        guard  let slot = UGAD.share.data?.jili else{
+            log("激励广告-无激励广告")
+            if let block = statusChange{
+                block(.skip)
+            }
+            return
+        }
+        let model = BURewardedVideoModel()
+        model.userId = app.uh_udid
+        let rewardedView = BUNativeExpressRewardedVideoAd.init(slotID: slot.adid, rewardedVideoModel: model)
+        rewardedView.delegate = self
+        rewardedView.loadData()
+        adview = rewardedView
+    }
 	
 	func rewarded_chuanshanjia(_ slot:UGADModel.UGADItem){
         log("激励广告-加载穿山甲广告")
