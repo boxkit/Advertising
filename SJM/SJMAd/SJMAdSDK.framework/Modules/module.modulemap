@@ -1,6 +1,0 @@
-framework module SJMAdSDK {
-  umbrella header "SJMAdSDK.h"
-
-  export *
-  module * { export * }
-}
